@@ -1,0 +1,34 @@
+name: Gradr
+
+on:
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  ch-1:
+    name: audit challenge 1
+    runs-on: ${{ matrix.operating-system }}
+
+  strategy:
+    matrix:
+      operating-system: [ubuntu-18.04]
+      php: [7.2.12]
+  
+  steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+
+    - name: Prepare To Install
+      uses: actions/setup-node@v1
+      with:
+        version: 10.x
+    - name: npm install
+      run: npm install
+
+    - name: setup php
+      uses: ./
+      with: |
+        php -i
+        php -m
+
