@@ -1,0 +1,12 @@
+{
+  "name": "devc-php",
+  "version": "1.0.0",
+  "repository": "https://github.com/nshaphan/devc-php.git",
+  "author": "shaphan <chaphannzabonimana@gmail.com>",
+  "license": "MIT",
+  "jest": {
+    "runner": "jest-runner-phpunit",
+    "displayName": "phpunit",
+    "moduleFileExtensions": ["php"]
+  }
+}
