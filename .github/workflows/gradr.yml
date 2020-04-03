@@ -60,13 +60,15 @@ jobs:
         with:
           php-version: "7.4"
 
-      - name: install PHPunit
-        run: composer require --dev phpunit/phpunit
+      - name: install PHPunit and other dependencies
+        run: |
+          composer require --dev phpunit/phpunit
+          composer require guzzlehttp/guzzle:~6.0
 
       - name: Prepare Audits
         uses: actions/checkout@v2
         with:
-          repository: nshaphan/php-audits
+          repository: BuildforSDG-Cohort1-Assessment/covid-19-estimator-audits-php
           path: audits
 
       - name: Run Audits
@@ -76,4 +78,102 @@ jobs:
 
       - name: Report Audit Stats
         uses: ./.github/actions/ch-1
+        if: always()
+
+  ch-2:
+    needs: ch-1
+    name: audit challenge 2
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [12]
+        operating-system: [ubuntu-18.04]
+        php: [7.2.12]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Prepare to install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: Install Jest and it's dependencies
+        run: |
+          yarn install
+          yarn add jest jest-runner-phpunit babel-core babel-jest axios @actions/core @actions/github
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v1
+        with:
+          php-version: "7.4"
+
+      - name: install PHPunit and other dependencies
+        run: |
+          composer require --dev phpunit/phpunit
+          composer require guzzlehttp/guzzle:~6.0
+
+      - name: Prepare Audits
+        uses: actions/checkout@v2
+        with:
+          repository: BuildforSDG-Cohort1-Assessment/covid-19-estimator-audits-php
+          path: audits
+
+      - name: Run Audits
+        run: |
+          ls audits
+          npx jest --json --outputFile=audits/ch-2.json --noStackTrace --config=./config.js
+
+      - name: Report Audit Stats
+        uses: ./.github/actions/ch-2
+        if: always()
+
+  ch-3:
+    needs: ch-2
+    name: audit challenge 3
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [12]
+        operating-system: [ubuntu-18.04]
+        php: [7.2.12]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Prepare to install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - name: Install Jest and it's dependencies
+        run: |
+          yarn install
+          yarn add jest jest-runner-phpunit babel-core babel-jest axios @actions/core @actions/github
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v1
+        with:
+          php-version: "7.4"
+
+      - name: install PHPunit and other dependencies
+        run: |
+          composer require --dev phpunit/phpunit
+          composer require guzzlehttp/guzzle:~6.0
+
+      - name: Prepare Audits
+        uses: actions/checkout@v2
+        with:
+          repository: BuildforSDG-Cohort1-Assessment/covid-19-estimator-audits-php
+          path: audits
+
+      - name: Run Audits
+        run: |
+          ls audits
+          npx jest --json --outputFile=audits/ch-3.json --noStackTrace --config=./config.js
+
+      - name: Report Audit Stats
+        uses: ./.github/actions/ch-3
         if: always()
