@@ -4,9 +4,25 @@
   "repository": "https://github.com/nshaphan/devc-php.git",
   "author": "shaphan <chaphannzabonimana@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest --noStackTrace --config=./config.js"
+  },
   "jest": {
     "runner": "jest-runner-phpunit",
     "displayName": "phpunit",
-    "moduleFileExtensions": ["php"]
+    "moduleFileExtensions": [
+      "php"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^25.2.6",
+    "babel-node": "^0.0.1-security",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^25.2.6",
+    "jest-runner-phpunit": "^0.0.7",
+    "phplint": "^2.0.1"
   }
 }
