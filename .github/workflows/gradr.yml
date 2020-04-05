@@ -73,8 +73,7 @@ jobs:
 
       - name: Run Audits
         run: |
-          ls audits
-          npx jest --json --outputFile=audits/ch-1.json --noStackTrace --config=audits/config.js
+          npx jest --json --outputFile=audits/ch-1.json --noStackTrace --config=./config.js
 
       - name: Report Audit Stats
         uses: ./.github/actions/ch-1
@@ -122,7 +121,6 @@ jobs:
 
       - name: Run Audits
         run: |
-          ls audits
           npx jest --json --outputFile=audits/ch-2.json --noStackTrace --config=./config.js
 
       - name: Report Audit Stats
@@ -171,7 +169,6 @@ jobs:
 
       - name: Run Audits
         run: |
-          ls audits
           npx jest --json --outputFile=audits/ch-3.json --noStackTrace --config=./config.js
 
       - name: Report Audit Stats
