@@ -75,8 +75,11 @@ jobs:
         run: |
           npx jest --json --outputFile=audits/ch-1.json --noStackTrace --config=./config.js
 
-      - name: Report Audit Stats
-        uses: ./.github/actions/ch-1
+      - name: Report Audits
+        uses: ./.github/actions/jest-out
+        with:
+          challenge: ch-1
+          lang: javascript
         if: always()
 
   ch-2:
@@ -123,8 +126,11 @@ jobs:
         run: |
           npx jest --json --outputFile=audits/ch-2.json --noStackTrace --config=./config.js
 
-      - name: Report Audit Stats
-        uses: ./.github/actions/ch-2
+      - name: Report Audits
+        uses: ./.github/actions/jest-out
+        with:
+          challenge: ch-2
+          lang: javascript
         if: always()
 
   ch-3:
@@ -171,8 +177,11 @@ jobs:
         run: |
           npx jest --json --outputFile=audits/ch-3.json --noStackTrace --config=./config.js
 
-      - name: Report Audit Stats
-        uses: ./.github/actions/ch-3
+      - name: Report Audits
+        uses: ./.github/actions/jest-out
+        with:
+          challenge: ch-3
+          lang: javascript
         if: always()
   ch-4:
     needs: ch-3
@@ -208,6 +217,9 @@ jobs:
         run: |
           npx jest --json --outputFile=audits/ch-4.json --noStackTrace --config=./jest.config.js
 
-      - name: Report Audit Stats
-        uses: ./.github/actions/ch-4
+      - name: Report Audits
+        uses: ./.github/actions/jest-out
+        with:
+          challenge: ch-4
+          lang: javascript
         if: always()
