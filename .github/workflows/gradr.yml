@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: [12]
+        node-version: [12.x]
         operating-system: [ubuntu-18.04]
         php: [7.2.12]
 
@@ -22,7 +22,7 @@ jobs:
       - name: Prepare To Install
         uses: actions/checkout@v2
         with:
-          node-version: 10.x
+          node-version: ${{ matrix.node-version }}
 
       - name: Install Node dependencies
         run: |
@@ -31,13 +31,14 @@ jobs:
 
       - name: Run Audits
         run: yarn phplint './src/**/*.php'
+  
   ch-1:
     needs: lint
     name: audit challenge 1
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: [12]
+        node-version: [12.x]
         operating-system: [ubuntu-18.04]
         php: [7.2.12]
 
@@ -48,12 +49,12 @@ jobs:
       - name: Prepare to install node
         uses: actions/setup-node@v1
         with:
-          node-version: 10.x
+          node-version: ${{ matrix.node-version }}
 
       - name: Install Jest and it's dependencies
         run: |
           yarn install
-          yarn add jest jest-runner-phpunit babel-core babel-jest axios @actions/core @actions/github
+          yarn add xml2json axios @actions/core @actions/github
 
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@v1
@@ -72,11 +73,13 @@ jobs:
           path: audits
 
       - name: Run Audits
-        run: |
-          npx jest --json --outputFile=audits/ch-1.json --noStackTrace --config=./config.js
+        run: vendor/bin/phpunit ./audits/ch-1 --testdox --log-junit audits/ch-1.xml
 
-      - name: Report Audit Stats
-        uses: ./.github/actions/ch-1
+      - name: Report Audits
+        uses: ./.github/actions/jest-out
+        with:
+          challenge: ch-1
+          lang: php
         if: always()
 
   ch-2:
@@ -85,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: [12]
+        node-version: [12.x]
         operating-system: [ubuntu-18.04]
         php: [7.2.12]
 
@@ -96,12 +99,12 @@ jobs:
       - name: Prepare to install node
         uses: actions/setup-node@v1
         with:
-          node-version: 10.x
+          node-version: ${{ matrix.node-version }}
 
       - name: Install Jest and it's dependencies
         run: |
           yarn install
-          yarn add jest jest-runner-phpunit babel-core babel-jest axios @actions/core @actions/github
+          yarn add jxml2json axios @actions/core @actions/github
 
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@v1
@@ -120,11 +123,13 @@ jobs:
           path: audits
 
       - name: Run Audits
-        run: |
-          npx jest --json --outputFile=audits/ch-2.json --noStackTrace --config=./config.js
+        run: vendor/bin/phpunit ./audits/ch-2 --testdox --log-junit audits/ch-2.xml
 
-      - name: Report Audit Stats
-        uses: ./.github/actions/ch-2
+      - name: Report Audits
+        uses: ./.github/actions/jest-out
+        with:
+          challenge: ch-2
+          lang: php
         if: always()
 
   ch-3:
@@ -133,7 +138,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: [12]
+        node-version: [12.x]
         operating-system: [ubuntu-18.04]
         php: [7.2.12]
 
@@ -144,12 +149,12 @@ jobs:
       - name: Prepare to install node
         uses: actions/setup-node@v1
         with:
-          node-version: 10.x
+          node-version: ${{ matrix.node-version }}
 
       - name: Install Jest and it's dependencies
         run: |
           yarn install
-          yarn add jest jest-runner-phpunit babel-core babel-jest axios @actions/core @actions/github
+          yarn add xml2json axios @actions/core @actions/github
 
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@v1
@@ -168,46 +173,128 @@ jobs:
           path: audits
 
       - name: Run Audits
-        run: |
-          npx jest --json --outputFile=audits/ch-3.json --noStackTrace --config=./config.js
+        run: vendor/bin/phpunit ./audits/ch-3 --testdox --log-junit audits/ch-3.xml
 
-      - name: Report Audit Stats
-        uses: ./.github/actions/ch-3
+      - name: Report Audits
+        uses: ./.github/actions/jest-out
+        with:
+          challenge: ch-3
+          lang: php
         if: always()
-  ch-4:
+
+  lighthouse:
     needs: ch-3
-    name: audit challenge 4
+    name: audit frontend app (lighthouse)
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        node_version: [12]
-        operating-system: [ubuntu-18.04]
-        php: [7.2.12]
+        node-version: [12.x]
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+    - name: Checkout Repo
+      uses: actions/checkout@v2
 
-      - name: Prepare to install node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
+    - name: Prepare To Install
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
 
-      - name: Install Jest and it's dependencies
-        run: |
-          yarn install
-          yarn add jest babel-core babel-jest axios @actions/core @actions/github
+    - name: Install Deps
+      run: yarn add axios properties-reader @lhci/cli@0.3.x @actions/core @actions/github
+    
+    - name: Prepare Audits
+      uses: actions/checkout@v2
+      with: 
+        repository: BuildforSDG-Cohort1-Assessment/covid-19-estimator-audits-js
+        path: audits
+    
+    - name: Injest Properties
+      id: props
+      uses: ./.github/actions/props-out
+    
+    - name: Run Audits
+      run: npx lhci autorun --collect.url=${{ steps.props.outputs.frontend }} --config=./audits/lighthouserc.json
+    
+    - name: Report Audits
+      uses: ./.github/actions/lhr-out
+      with:
+        lang: php
+      if: always()
+  
+  ch-4:
+    needs: lighthouse
+    name: audit frontend UI
+    runs-on: ubuntu-latest
 
-      - name: Prepare Audits
-        uses: actions/checkout@v2
-        with:
-          repository: BuildforSDG-Cohort1-Assessment/covid-19-estimator-audits-php
-          path: audits
+    strategy:
+      matrix:
+        node-version: [12.x]
 
-      - name: Run Audits
-        run: |
-          npx jest --json --outputFile=audits/ch-4.json --noStackTrace --config=./jest.config.js
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
 
-      - name: Report Audit Stats
-        uses: ./.github/actions/ch-4
-        if: always()
+    - name: Prepare To Install
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Deps
+      run: |
+        yarn install
+        yarn add jest axios on-covid-19 properties-reader puppeteer @babel/core @babel/preset-env babel-jest @actions/core @actions/github
+    - name: Prepare Audits
+      uses: actions/checkout@v2
+      with: 
+        repository: BuildforSDG-Cohort1-Assessment/covid-19-estimator-audits-js
+        path: audits
+
+    - name: Run Audits
+      run: npx jest audits/ch-4 --json --outputFile=audits/ch-4.json --noStackTrace
+
+    - name: Report Audits
+      uses: ./.github/actions/jest-out
+      with:
+        challenge: ch-4
+        lang: javascript
+      if: always()
+
+  ch-5:
+    needs: ch-3
+    name: audit backend API
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+
+    - name: Prepare To Install
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Deps
+      run: |
+        yarn install
+        yarn add jest axios on-covid-19 @babel/core @babel/preset-env babel-jest @actions/core @actions/github
+    - name: Prepare Audits
+      uses: actions/checkout@v2
+      with: 
+        repository: BuildforSDG-Cohort1-Assessment/covid-19-estimator-audits-js
+        path: audits
+
+    - name: Run Audits
+      run: npx jest audits/ch-5 --json --outputFile=audits/ch-5.json --noStackTrace
+
+    - name: Report Audits
+      uses: ./.github/actions/jest-out
+      with:
+        challenge: ch-5
+        lang: javascript
+      if: always()
+      
