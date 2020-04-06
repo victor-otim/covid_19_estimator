@@ -12,6 +12,7 @@ const CHALLENGES = {
 };
 
 const getStatsFor = (lang, task) => {
+  console.log('getStatsFor: ', lang, task);
   let stats = {};
 
   if (lang === 'javscript' || ['ch-4', 'ch-5'].includes(task)) {
@@ -29,7 +30,7 @@ const getStatsFor = (lang, task) => {
   }
 
   if (lang === 'php') {
-    const xml = require(`../../../audits/${task}.xml`);
+    const xml = fs.readFileSync(`../../../audits/${task}.xml`, 'utf8');
     const data = xml2json.toJson(xml, { object: true });
     console.log(data);
     const payload = data.testsuites.testsuite[0];

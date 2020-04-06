@@ -78,6 +78,9 @@ jobs:
       - name: Run Audits
         run: vendor/bin/phpunit ./audits/ch-1 --testdox --log-junit audits/ch-1.xml
 
+      - name: List Reports
+        run:  ls audits
+
       - name: Report Audits
         uses: ./.github/actions/jest-out
         with:
