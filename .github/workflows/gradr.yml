@@ -6,9 +6,11 @@ on:
       - master
 
 jobs:
+
   lint:
     name: audit code style
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [12.x]
@@ -20,11 +22,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Prepare To Install
-        uses: actions/checkout@v2
+        uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Node dependencies
+      - name: Install Deps
         run: |
           yarn install
           yarn add phplint
@@ -36,6 +38,7 @@ jobs:
     needs: lint
     name: audit challenge 1
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [12.x]
@@ -43,15 +46,15 @@ jobs:
         php: [7.2.12]
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: Prepare to install node
+      - name: Prepare To Install
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Jest and it's dependencies
+      - name: Install JS Deps
         run: |
           yarn install
           yarn add xml2json axios @actions/core @actions/github
@@ -59,9 +62,9 @@ jobs:
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@v1
         with:
-          php-version: "7.4"
+          php-version: ${{ matrix.php }}
 
-      - name: install PHPunit and other dependencies
+      - name: Install PHPunit
         run: |
           composer require --dev phpunit/phpunit
           composer require guzzlehttp/guzzle:~6.0
@@ -86,6 +89,7 @@ jobs:
     needs: ch-1
     name: audit challenge 2
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [12.x]
@@ -93,25 +97,25 @@ jobs:
         php: [7.2.12]
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: Prepare to install node
+      - name: Prepare To Install
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Jest and it's dependencies
+      - name: Install JS Deps
         run: |
           yarn install
-          yarn add jxml2json axios @actions/core @actions/github
+          yarn add xml2json axios @actions/core @actions/github
 
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@v1
         with:
-          php-version: "7.4"
+          php-version: ${{ matrix.php }}
 
-      - name: install PHPunit and other dependencies
+      - name: Install PHPunit
         run: |
           composer require --dev phpunit/phpunit
           composer require guzzlehttp/guzzle:~6.0
@@ -136,6 +140,7 @@ jobs:
     needs: ch-2
     name: audit challenge 3
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [12.x]
@@ -143,15 +148,15 @@ jobs:
         php: [7.2.12]
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: Prepare to install node
+      - name: Prepare To Install
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Jest and it's dependencies
+      - name: Install JS Deps
         run: |
           yarn install
           yarn add xml2json axios @actions/core @actions/github
@@ -159,9 +164,9 @@ jobs:
       - name: Setup PHP Environment
         uses: shivammathur/setup-php@v1
         with:
-          php-version: "7.4"
+          php-version: ${{ matrix.php }}
 
-      - name: install PHPunit and other dependencies
+      - name: Install PHPunit
         run: |
           composer require --dev phpunit/phpunit
           composer require guzzlehttp/guzzle:~6.0
@@ -243,7 +248,7 @@ jobs:
     - name: Install Deps
       run: |
         yarn install
-        yarn add jest axios on-covid-19 properties-reader puppeteer @babel/core @babel/preset-env babel-jest @actions/core @actions/github
+        yarn add jest axios on-covid-19 properties-reader xml2json puppeteer @babel/core @babel/preset-env babel-jest @actions/core @actions/github
     - name: Prepare Audits
       uses: actions/checkout@v2
       with: 
@@ -281,7 +286,7 @@ jobs:
     - name: Install Deps
       run: |
         yarn install
-        yarn add jest axios on-covid-19 @babel/core @babel/preset-env babel-jest @actions/core @actions/github
+        yarn add jest axios on-covid-19 properties-reader xml2json @babel/core @babel/preset-env babel-jest @actions/core @actions/github
     - name: Prepare Audits
       uses: actions/checkout@v2
       with: 
