@@ -73,7 +73,7 @@ jobs:
           path: audits
 
       - name: Run Audits
-        run: vendor/bin/phpunit ./audits/ch-1 --log-junit audits/ch-1.xml
+        run: vendor/bin/phpunit ./audits/ch-1 --testdox --log-junit audits/ch-1.xml
 
       - name: Report Audits
         uses: ./.github/actions/jest-out
@@ -123,7 +123,7 @@ jobs:
           path: audits
 
       - name: Run Audits
-        run: vendor/bin/phpunit ./audits/ch-2 --log-junit audits/ch-2.xml
+        run: vendor/bin/phpunit ./audits/ch-2 --testdox --log-junit audits/ch-2.xml
 
       - name: Report Audits
         uses: ./.github/actions/jest-out
@@ -173,7 +173,7 @@ jobs:
           path: audits
 
       - name: Run Audits
-        run: vendor/bin/phpunit ./audits/ch-3 --log-junit audits/ch-3.xml
+        run: vendor/bin/phpunit ./audits/ch-3 --testdox --log-junit audits/ch-3.xml
 
       - name: Report Audits
         uses: ./.github/actions/jest-out
