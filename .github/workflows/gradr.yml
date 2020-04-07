@@ -79,10 +79,8 @@ jobs:
         run: |
           vendor/bin/phpunit ./audits/ch-1 --testdox --log-junit audits/ch-1.xml
       
-      - name: Run Audits
-        run: |
-          ls audits
-          ls
+      - name: LS Reports
+        run: ls
         if: always()
 
       - name: Report Audits
