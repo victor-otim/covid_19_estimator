@@ -78,7 +78,10 @@ jobs:
       - name: Run Audits
         run: |
           vendor/bin/phpunit ./audits/ch-1 --testdox --log-junit audits/ch-1.xml
-          ls audits
+      
+      - name: Run Audits
+        run: ls audits
+        if: always()
 
       - name: Report Audits
         uses: ./.github/actions/jest-out
