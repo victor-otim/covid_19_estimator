@@ -13,25 +13,28 @@ const CHALLENGES = {
 };
 
 const getStatsFor = (lang, task) => {
-  console.log('getStatsFor: ', lang, task);
   let stats = {};
 
   if (lang === 'javscript' || ['ch-4', 'ch-5'].includes(task)) {
-    const payload = require(`../../../audits/${task}.json`);
-    stats.numTotalTests = payload.numTotalTests;
-    stats.numPassedTests = payload.numPassedTests;
+    // const payload = require(`../../../audits/${task}.json`);
+    const json = fs.readFileSync(`${process.cwd()}/audits/${task}.json`, 'utf8');
+    const payload = JSON.parse(json);
+    stats.totalTests = payload.numTotalTests;
+    stats.passedTests = payload.numPassedTests;
   }
 
   if (lang === 'python') {
     // JSON:: report > summary > passed | num_tests
-    const data = require(`../../../audits/${task}.json`);
+    const json = fs.readFileSync(`${process.cwd()}/audits/${task}.json`, 'utf8');
+    const data = JSON.parse(json);
+    console.log(data);
+
     const payload = data.report.summary;
-    stats.numTotalTests = payload.num_tests;
-    stats.numPassedTests = payload.passed;
+    stats.totalTests = payload.num_tests;
+    stats.passedTests = payload.passed;
   }
 
   if (lang === 'php') {
-    console.log(process.cwd());
     const xml = fs.readFileSync(`${process.cwd()}/audits/${task}.xml`, 'utf8');
     const data = xml2json.toJson(xml, { object: true });
     
@@ -53,9 +56,8 @@ const getStatsFor = (lang, task) => {
     // }
 
     const payload = data.testsuites.testsuite;
-    stats.numErrors = payload.errors;
-    stats.numTotalTests = payload.tests;
-    stats.numFailedTests = payload.failures;
+    stats.totalTests = payload.tests;
+    stats.passedTests = parseInt(payload.tests, 10) - parseInt(payload.failures, 10);
   }
 
   return stats;
@@ -74,7 +76,7 @@ const run = async () => {
       owner,
       ...stats,
       language,
-      source: 'jest',
+      source: 'unit-tests',
       type: challenge
     };
 
