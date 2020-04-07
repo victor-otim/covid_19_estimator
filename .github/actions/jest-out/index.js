@@ -32,12 +32,11 @@ const getStatsFor = (lang, task) => {
 
   if (lang === 'php') {
     console.log(process.cwd());
-    console.log(__dirname);
-
     const xml = fs.readFileSync(`${process.cwd()}/audits/${task}.xml`, 'utf8');
     const data = xml2json.toJson(xml, { object: true });
     console.log(data);
-    const payload = data.testsuites.testsuite[0];
+
+    const payload = data.testsuites.testsuite;
     // XML:: testsuites > testsuite > tests | errors | failures (attrs)
     stats.numErrors = payload.errors;
     stats.numTotalTests = payload.tests;
