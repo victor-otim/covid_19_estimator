@@ -34,10 +34,25 @@ const getStatsFor = (lang, task) => {
     console.log(process.cwd());
     const xml = fs.readFileSync(`${process.cwd()}/audits/${task}.xml`, 'utf8');
     const data = xml2json.toJson(xml, { object: true });
-    console.log(data);
+    
+    // HINT: how data looks.
+    // {
+    //   testsuites: {
+    //     testsuite: {
+    //       name: './audits/ch-1',
+    //       tests: '3',
+    //       assertions: '36',
+    //       errors: '0',
+    //       warnings: '0',
+    //       failures: '3',
+    //       skipped: '0',
+    //       time: '0.350120',
+    //       testsuite: [Object]
+    //     }
+    //   }
+    // }
 
     const payload = data.testsuites.testsuite;
-    // XML:: testsuites > testsuite > tests | errors | failures (attrs)
     stats.numErrors = payload.errors;
     stats.numTotalTests = payload.tests;
     stats.numFailedTests = payload.failures;
