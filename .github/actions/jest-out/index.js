@@ -34,7 +34,7 @@ const getStatsFor = (lang, task) => {
     console.log(process.cwd());
     console.log(__dirname);
 
-    const xml = fs.readFileSync(`../../../audits/${task}.xml`, 'utf8');
+    const xml = fs.readFileSync(`${process.cwd()}/audits/${task}.xml`, 'utf8');
     const data = xml2json.toJson(xml, { object: true });
     console.log(data);
     const payload = data.testsuites.testsuite[0];
