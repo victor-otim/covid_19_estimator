@@ -69,8 +69,6 @@ const run = async () => {
     const stats = getStatsFor(language, task);
 
     const { repo, owner } = context.repo;
-    console.log('repo', context.repo);
-
     const report = {
       repo,
       owner,
