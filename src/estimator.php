@@ -1,47 +1,91 @@
 <?php
+define('BASEPATH', $_SERVER['DOCUMENT_ROOT'] .'/covid_estimator/covid-19-estimator-php/');
 
-function hospitalBedsByRequestedTime ($totalHospitalBeds, $covidCases)
+
+function covid19ImpactEstimator($data)
+{	
+	$estimates['data'] = $data;
+	
+	# Get number of days and factor
+	$data['timeFactor'] = timeFactor($data['timeToElapse'], $data['periodType']);
+		
+	$estimates['impact'] = impact($data); 
+		
+	$estimates['severeImpact'] = severeImpact($data);
+	
+	$estimates['severeCasesByRequestedTime'] = round($estimates['severeImpact']['infectionsByRequestedTime'] * 0.15);
+	
+	$estimates['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $estimates['severeCasesByRequestedTime']);
+	
+	$estimates['casesForICUByRequestedTime'] = round(0.05 * $estimates['severeCasesByRequestedTime']);
+	
+	$estimates['casesForVentilatorsByRequestedTime'] =  round(0.02 * $estimates['severeCasesByRequestedTime']);
+	
+	$estimates['dollarsInFlight'] = round($estimates['severeImpact']['infectionsByRequestedTime'] * 0.65 * 1.5 * 30, 2);
+	
+	return $estimates;
+}
+
+function timeFactor ($timeToElapse = 0, $periodType = 'days')
+{
+	$factor = 0;
+	
+	switch($periodType):
+	
+		case 'days':
+			
+			$pow_number = floor($timeToElapse / 3);
+			
+			break;
+		
+		case 'weeks':
+			
+			$days = $timeToElapse * 7;
+		
+			$pow_number = floor($days / 3);
+			
+			break;
+		
+		case 'months':
+			
+			$days = $timeToElapse * 30;
+		
+			$pow_number = floor($days / 3);
+		
+			break;
+		
+		default:
+			
+			$pow_number = 0;
+	
+	endswitch;
+	
+	return pow(2, $pow_number);
+}
+
+function hospitalBedsByRequestedTime ($totalHospitalBeds, $severeCases)
 {
 	$availableBeds = 0.35 * $totalHospitalBeds;
 	
-	$currentUsage = ($availableBeds>$covidCases? $availableBeds : $availableBeds - $covidCases);
+	return round($availableBeds>$severeCases? $availableBeds : $availableBeds - $severeCases);
 }
 
 
 function impact($data)
 {
-	$impact['currentlyInfected'] = $data['reportedCases'] * 10;
+	$impact['currentlyInfected'] = round($data['reportedCases'] * 10);
 	
-	$impact['infectionsByRequestedTime'] = $impact['currentlyInfected'] * 512;
+	$impact['infectionsByRequestedTime'] = round($impact['currentlyInfected'] * $data['timeFactor']);
+	
+	return $impact;
 }
 
 
 function severeImpact($data)
 {
-	$severeImpact['currentlyInfected'] = $data['reportedCases'] * 50;
+	$severeImpact['currentlyInfected'] = round($data['reportedCases'] * 50);
 	
-	$severeImpact['infectionsByRequestedTime'] = $impact['currentlyInfected'] * 512;
-}
-
-function covid19ImpactEstimator($data)
-{
-	$input = $data;
+	$severeImpact['infectionsByRequestedTime'] = round($severeImpact['currentlyInfected'] * $data['timeFactor']);
 	
-	$data['data'] = $input;
-	
-	$data['impact'] = impact($data); 
-		
-	$data['severeImpact'] = severeImpact($data);
-	
-	$data['severeCasesByRequestedTime'] = $data['severeImpact']['infectionsByRequestedTime'] * 0.15;
-	
-	$input['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime($input['totalHospitalBeds'], $data['severeCasesByRequestedTime']);
-	
-	$data['casesForICUByRequestedTime'] = 0.05 * $data['severeCasesByRequestedTime'];
-	
-	$data['casesForVentilatorsByRequestedTime'] =  0.02 * $data['severeCasesByRequestedTime'];
-	
-	$data['dollarsInFlight'] = $data['severeImpact']['infectionsByRequestedTime'] * 0.65 * 1.5 * 30;;
-	
-	return $data;
+	return $severeImpact;
 }
