@@ -4,9 +4,7 @@
 	header("Access-Control-Allow-Methods: POST");
 	header("Access-Control-Max-Age: 3600");
 	header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-	
-	exit($_SERVER['DOCUMENT_ROOT']);
-	
+		
 	include_once($_SERVER['DOCUMENT_ROOT'] .'/covid_estimator/covid-19-estimator-php/src/estimator.php');
 	
 	$httpMethod = $_SERVER['REQUEST_METHOD'];
