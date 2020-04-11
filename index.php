@@ -92,7 +92,7 @@
     </div>
 </body>
 <script type="application/ecmascript">
-	$('#goestimate').on('click', function(){
+	$('#go-estimate').on('click', function(){
 			var formdata = {};
 			// validate fields
 			var passedCheck = true;
