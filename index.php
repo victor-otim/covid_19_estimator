@@ -52,7 +52,8 @@
 	button {
 		width:200px;
 		height:54px;
-		font-size:18px;	
+		font-size:18px;
+		margin:10px;	
 	}
 	
 </style>
@@ -104,7 +105,9 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2"><button type="submit" id="go-estimate" name="goestimate" data-go-estimate>Estimate</button></td>
+                <td colspan="2">
+                	<button type="submit" id="go-estimate" name="goestimate" data-go-estimate>Estimate</button>
+                </td>
             </tr>
         </table>
     </div>
