@@ -89,3 +89,18 @@ function severeImpact($data)
 	
 	return $severeImpact;
 }
+
+
+# handle form post
+if(!empty($_POST['goestimate'])):
+	
+	# remove goestimate from post data
+	unset($_POST['goestimate']);
+	
+	$estimates = covid19ImpactEstimator($_POST);
+	
+	print '<pre>';
+    print_r($estimates);
+    print '</pre>';
+
+endif;
