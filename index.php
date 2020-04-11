@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name=description content="COVID-19 Estimator, Andela-facebook challenge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>COVID-19 Impact Estimator</title>
 <style>
 	div.form_content {
