@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name=description content="COVID-19 Estimator, Andela-facebook challenge"/>
 <title>COVID-19 Impact Estimator</title>
 <style>
 	div.form_content {
