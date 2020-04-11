@@ -13,15 +13,15 @@ function covid19ImpactEstimator($data)
 		
 	$estimates['severeImpact'] = severeImpact($data);
 	
-	$estimates['severeCasesByRequestedTime'] = round($estimates['severeImpact']['infectionsByRequestedTime'] * 0.15);
+	$estimates['severeCasesByRequestedTime'] = round($estimates['severeImpact']['infectionsByRequestedTime'] * 0.15, PHP_ROUND_HALF_DOWN);
 	
 	$estimates['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $estimates['severeCasesByRequestedTime']);
 	
-	$estimates['casesForICUByRequestedTime'] = round(0.05 * $estimates['severeCasesByRequestedTime']);
+	$estimates['casesForICUByRequestedTime'] = round(0.05 * $estimates['severeCasesByRequestedTime'], PHP_ROUND_HALF_DOWN);
 	
-	$estimates['casesForVentilatorsByRequestedTime'] =  round(0.02 * $estimates['severeCasesByRequestedTime']);
+	$estimates['casesForVentilatorsByRequestedTime'] =  round(0.02 * $estimates['severeCasesByRequestedTime'], PHP_ROUND_HALF_DOWN);
 	
-	$estimates['dollarsInFlight'] = round($estimates['severeImpact']['infectionsByRequestedTime'] * 0.65 * 1.5 * 30, 2);
+	$estimates['dollarsInFlight'] = round($estimates['severeImpact']['infectionsByRequestedTime'] * 0.65 * 1.5 * 30, PHP_ROUND_HALF_DOWN);
 	
 	return $estimates;
 }
@@ -67,15 +67,15 @@ function hospitalBedsByRequestedTime ($totalHospitalBeds, $severeCases)
 {
 	$availableBeds = 0.35 * $totalHospitalBeds;
 	
-	return round($availableBeds>$severeCases? $availableBeds : $availableBeds - $severeCases);
+	return round($availableBeds>$severeCases? $availableBeds : $availableBeds - $severeCases, PHP_ROUND_HALF_DOWN);
 }
 
 
 function impact($data)
 {
-	$impact['currentlyInfected'] = round($data['reportedCases'] * 10);
+	$impact['currentlyInfected'] = round($data['reportedCases'] * 10, PHP_ROUND_HALF_DOWN);
 	
-	$impact['infectionsByRequestedTime'] = round($impact['currentlyInfected'] * $data['timeFactor']);
+	$impact['infectionsByRequestedTime'] = round($impact['currentlyInfected'] * $data['timeFactor'], PHP_ROUND_HALF_DOWN);
 	
 	return $impact;
 }
@@ -83,9 +83,9 @@ function impact($data)
 
 function severeImpact($data)
 {
-	$severeImpact['currentlyInfected'] = round($data['reportedCases'] * 50);
+	$severeImpact['currentlyInfected'] = round($data['reportedCases'] * 50, PHP_ROUND_HALF_DOWN);
 	
-	$severeImpact['infectionsByRequestedTime'] = round($severeImpact['currentlyInfected'] * $data['timeFactor']);
+	$severeImpact['infectionsByRequestedTime'] = round($severeImpact['currentlyInfected'] * $data['timeFactor'], PHP_ROUND_HALF_DOWN);
 	
 	return $severeImpact;
 }
