@@ -59,23 +59,33 @@
                 </td>
             </tr>
         	<tr>
-            	<td class="label">Population</td>
+            	<td class="label">
+                	<label for="population">Population</label>
+                </td>
                 <td><input type="text" id="population" class="input number" data-population name="population" /></td>
             </tr>
             <tr>
-            	<td class="label">Time to elapse</td>
+            	<td class="label">
+                	<label for="time-to-elapse">Time to elapse</label>
+               	</td>
                 <td><input type="text" id="time-to-elapse" class="input number" data-time-to-elapse name="timeToElapse" /></td>
             </tr>
             <tr>
-            	<td class="label">Reported cases</td>
+            	<td class="label">
+                	<label for="reported-cases">Reported cases</label>
+               	</td>
                 <td><input type="text" id="reported-cases" class="input number" name="reportedCases" data-reported-cases /></td>
             </tr>
             <tr>
-            	<td class="label">Total hospital beds</td>
+            	<td class="label">
+                	<label for="total-hospital-beds">Total hospital beds</label>
+               	</td>
                 <td><input type="text" id="total-hospital-beds" class="input number" name="totalHospitalBeds" data-total-hospital-beds /></td>
             </tr>
             <tr>
-            	<td class="label">Period type</td>
+            	<td class="label">
+                	<label for="period-type">Period type</label>
+              	</td>
                 <td>
                 	<select name="periodType" id="period-type" class="input" data-period-type>
                     	<option value="">-Select period type-</option>
