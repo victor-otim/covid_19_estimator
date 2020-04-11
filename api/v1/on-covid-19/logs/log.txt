@@ -1,0 +1,5 @@
+POST		/covid_estimator/covid-19-estimator-php/api/v1/on-covid-19/json/		200		6.1988830566406E-5 ms
+POST		/covid_estimator/covid-19-estimator-php/api/v1/on-covid-19/xml/		200		0.00040698051452637 ms
+POST		/covid_estimator/covid-19-estimator-php/api/v1/on-covid-19/		200		6.103515625E-5 ms
+POST		/covid_estimator/covid-19-estimator-php/api/v1/on-covid-19/		200		0.0023388862609863 ms
+POST		/covid_estimator/covid-19-estimator-php/api/v1/on-covid-19/		200		6.5088272094727E-5 ms
