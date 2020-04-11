@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*[^/])$ /$1/ [L,R] # <- for test, for prod use [L,R=301]
