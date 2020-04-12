@@ -38,7 +38,7 @@ function timeFactor ($timeToElapse = 0, $periodType = 'days')
 			
 			$days = $timeToElapse;
 			
-			$pow_number = intval($timeToElapse / 3);
+			$pow_number = intval($days / 3);
 			
 			$numOfDays = $timeToElapse;
 			
@@ -85,13 +85,13 @@ function impact($data)
 	
 	$impact['infectionsByRequestedTime'] = $impact['currentlyInfected'] * $data['timeFactor'];
 	
-	$impact['severeCasesByRequestedTime'] = intval($impact['infectionsByRequestedTime'] * 0.15);
+	$impact['severeCasesByRequestedTime'] = floor($impact['infectionsByRequestedTime'] * 0.15);
 	
 	$impact['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $impact['severeCasesByRequestedTime']);	
 	
-	$impact['casesForICUByRequestedTime'] = intval(0.05 * $impact['infectionsByRequestedTime']);
+	$impact['casesForICUByRequestedTime'] = floor(0.05 * $impact['infectionsByRequestedTime']);
 	
-	$impact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $impact['infectionsByRequestedTime']);
+	$impact['casesForVentilatorsByRequestedTime'] =  floor(0.02 * $impact['infectionsByRequestedTime']);
 	
 	$impact['dollarsInFlight'] = round($impact['infectionsByRequestedTime'] * $data['region']['avgDailyIncomePopulation'] * $data['region']['avgDailyIncomeInUSD'] * $data['days'], 2);
 	
@@ -105,13 +105,13 @@ function severeImpact($data)
 	
 	$severeImpact['infectionsByRequestedTime'] = $severeImpact['currentlyInfected'] * $data['timeFactor'];
 	
-	$severeImpact['severeCasesByRequestedTime'] = intval($severeImpact['infectionsByRequestedTime'] * 0.15);
+	$severeImpact['severeCasesByRequestedTime'] = floor($severeImpact['infectionsByRequestedTime'] * 0.15);
 	
 	$severeImpact['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $severeImpact['severeCasesByRequestedTime']);
 	
-	$severeImpact['casesForICUByRequestedTime'] = intval(0.05 * $severeImpact['infectionsByRequestedTime']);
+	$severeImpact['casesForICUByRequestedTime'] = floor(0.05 * $severeImpact['infectionsByRequestedTime']);
 	
-	$severeImpact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $severeImpact['infectionsByRequestedTime']);
+	$severeImpact['casesForVentilatorsByRequestedTime'] =  floor(0.02 * $severeImpact['infectionsByRequestedTime']);
 	
 	$severeImpact['dollarsInFlight'] = round($severeImpact['infectionsByRequestedTime'] * $data['region']['avgDailyIncomePopulation'] * $data['region']['avgDailyIncomeInUSD'] * $data['days'], 2);
 	
