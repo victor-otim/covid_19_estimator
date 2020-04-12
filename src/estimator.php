@@ -93,7 +93,7 @@ function impact($data)
 	
 	$impact['casesForVentilatorsByRequestedTime'] =  floor(0.02 * $impact['infectionsByRequestedTime']);
 	
-	$impact['dollarsInFlight'] = round(($impact['infectionsByRequestedTime'] * $data['region']['avgDailyIncomePopulation'] * $data['region']['avgDailyIncomeInUSD']) / $data['days'], 2);
+	$impact['dollarsInFlight'] = floor(($impact['infectionsByRequestedTime'] * $data['region']['avgDailyIncomePopulation'] * $data['region']['avgDailyIncomeInUSD']) / $data['days']);
 	
 	return $impact;
 }
@@ -113,7 +113,7 @@ function severeImpact($data)
 	
 	$severeImpact['casesForVentilatorsByRequestedTime'] =  floor(0.02 * $severeImpact['infectionsByRequestedTime']);
 	
-	$severeImpact['dollarsInFlight'] = round(($severeImpact['infectionsByRequestedTime'] * $data['region']['avgDailyIncomePopulation'] * $data['region']['avgDailyIncomeInUSD']) / $data['days'], 2);
+	$severeImpact['dollarsInFlight'] = floor(($severeImpact['infectionsByRequestedTime'] * $data['region']['avgDailyIncomePopulation'] * $data['region']['avgDailyIncomeInUSD']) / $data['days']);
 	
 	return $severeImpact;
 }
