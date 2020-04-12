@@ -8,7 +8,11 @@ function covid19ImpactEstimator($data)
 	$estimates['data'] = $data;
 	
 	# Get number of days and factor
-	$data['timeFactor'] = timeFactor($data['timeToElapse'], $data['periodType']);
+	$timeFactor = timeFactor($data['timeToElapse'], $data['periodType']);
+	
+	$data['timeFactor'] = $timeFactor['factor'];
+	
+	$data['days'] = $timeFactor['days'];
 		
 	$estimates['impact'] = impact($data); 
 		
@@ -20,12 +24,17 @@ function covid19ImpactEstimator($data)
 function timeFactor ($timeToElapse = 0, $periodType = 'days')
 {
 	$factor = 0;
+	$days = 0;
 	
 	switch($periodType):
 	
 		case 'days':
 			
+			$days = $timeToElapse;
+			
 			$pow_number = intval($timeToElapse / 3);
+			
+			$numOfDays = $timeToElapse;
 			
 			break;
 		
@@ -51,7 +60,9 @@ function timeFactor ($timeToElapse = 0, $periodType = 'days')
 	
 	endswitch;
 	
-	return pow(2, $pow_number);
+	$factor = pow(2, $pow_number);
+	
+	return array('factor'=>$factor, 'days'=>$days);
 }
 
 function hospitalBedsByRequestedTime ($totalHospitalBeds, $severeCases)
@@ -76,7 +87,7 @@ function impact($data)
 	
 	$impact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $impact['infectionsByRequestedTime']);
 	
-	$impact['dollarsInFlight'] = intval($impact['infectionsByRequestedTime'] * 0.65 * 1.5 * 30);
+	$impact['dollarsInFlight'] = round($impact['infectionsByRequestedTime'] * 0.65 * 1.5 * $data['days'], 2);
 	
 	return $impact;
 }
@@ -96,7 +107,7 @@ function severeImpact($data)
 	
 	$severeImpact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $severeImpact['infectionsByRequestedTime']);
 	
-	$severeImpact['dollarsInFlight'] = intval($severeImpact['infectionsByRequestedTime'] * 0.65 * 1.5 * 30);
+	$severeImpact['dollarsInFlight'] = round($severeImpact['infectionsByRequestedTime'] * 0.65 * 1.5 * $data['days'], 2);
 	
 	return $severeImpact;
 }
