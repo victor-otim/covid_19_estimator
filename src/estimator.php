@@ -4,7 +4,13 @@ define('BASEPATH', $_SERVER['DOCUMENT_ROOT'] .'/');
 #define('BASEPATH', $_SERVER['DOCUMENT_ROOT'] .'/covid_estimator/covid-19-estimator-php/');
 
 function covid19ImpactEstimator($data)
-{	
+{
+	#default region values
+	if(empty($data['region']['name'])) $data['region']['name'] = 'Africa'; 
+	if(empty($data['region']['avgAge'])) $data['region']['avgAge'] = 19.7; 
+	if(empty($data['region']['avgDailyIncomeInUSD'])) $data['region']['avgDailyIncomeInUSD'] = 5; 
+	if(empty($data['region']['avgDailyIncomePopulation'])) $data['region']['avgDailyIncomePopulation'] = 0.71; 
+	
 	$estimates['data'] = $data;
 	
 	# Get number of days and factor
@@ -87,7 +93,7 @@ function impact($data)
 	
 	$impact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $impact['infectionsByRequestedTime']);
 	
-	$impact['dollarsInFlight'] = round($impact['infectionsByRequestedTime'] * 0.65 * 1.5 * $data['days'], 2);
+	$impact['dollarsInFlight'] = round($impact['infectionsByRequestedTime'] * $data['region']['avgDailyIncomePopulation'] * $data['region']['avgDailyIncomeInUSD'] * $data['days'], 2);
 	
 	return $impact;
 }
@@ -107,7 +113,7 @@ function severeImpact($data)
 	
 	$severeImpact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $severeImpact['infectionsByRequestedTime']);
 	
-	$severeImpact['dollarsInFlight'] = round($severeImpact['infectionsByRequestedTime'] * 0.65 * 1.5 * $data['days'], 2);
+	$severeImpact['dollarsInFlight'] = round($severeImpact['infectionsByRequestedTime'] * $data['region']['avgDailyIncomePopulation'] * $data['region']['avgDailyIncomeInUSD'] * $data['days'], 2);
 	
 	return $severeImpact;
 }
