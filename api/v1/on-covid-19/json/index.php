@@ -27,7 +27,7 @@
 		
 	else:
 		
-		$estimates = array('severeCasesByRequestedTime'=>'No data received');		
+		$estimates = array('ERROR'=>'No data received');		
 		
 		$response = 400;
 		
