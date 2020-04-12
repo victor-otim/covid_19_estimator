@@ -72,9 +72,9 @@ function impact($data)
 	
 	$impact['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $impact['severeCasesByRequestedTime']);	
 	
-	$impact['casesForICUByRequestedTime'] = intval(0.05 * $impact['severeCasesByRequestedTime']);
+	$impact['casesForICUByRequestedTime'] = intval(0.05 * $impact['infectionsByRequestedTime']);
 	
-	$impact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $impact['severeCasesByRequestedTime']);
+	$impact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $impact['infectionsByRequestedTime']);
 	
 	$impact['dollarsInFlight'] = intval($impact['infectionsByRequestedTime'] * 0.65 * 1.5 * 30);
 	
@@ -92,9 +92,9 @@ function severeImpact($data)
 	
 	$severeImpact['hospitalBedsByRequestedTime'] = hospitalBedsByRequestedTime($data['totalHospitalBeds'], $severeImpact['severeCasesByRequestedTime']);
 	
-	$severeImpact['casesForICUByRequestedTime'] = intval(0.05 * $severeImpact['severeCasesByRequestedTime']);
+	$severeImpact['casesForICUByRequestedTime'] = intval(0.05 * $severeImpact['infectionsByRequestedTime']);
 	
-	$severeImpact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $severeImpact['severeCasesByRequestedTime']);
+	$severeImpact['casesForVentilatorsByRequestedTime'] =  intval(0.02 * $severeImpact['infectionsByRequestedTime']);
 	
 	$severeImpact['dollarsInFlight'] = intval($severeImpact['infectionsByRequestedTime'] * 0.65 * 1.5 * 30);
 	
