@@ -8,8 +8,8 @@ function covid19ImpactEstimator($data)
 	#default region values
 	if(empty($data['region']['name'])) $data['region']['name'] = 'Africa'; 
 	if(empty($data['region']['avgAge'])) $data['region']['avgAge'] = 19.7; 
-	if(empty($data['region']['avgDailyIncomeInUSD'])) $data['region']['avgDailyIncomeInUSD'] = 5; 
-	if(empty($data['region']['avgDailyIncomePopulation'])) $data['region']['avgDailyIncomePopulation'] = 0.71; 
+	if(empty($data['region']['avgDailyIncomeInUSD'])) $data['region']['avgDailyIncomeInUSD'] = 1.5; 
+	if(empty($data['region']['avgDailyIncomePopulation'])) $data['region']['avgDailyIncomePopulation'] = 0.65; 
 	
 	$estimates['data'] = $data;
 	
